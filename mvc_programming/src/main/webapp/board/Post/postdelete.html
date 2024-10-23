@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>글삭제</title>
+
+<script>
+
+
+
+
+function saveBtn() {
+	var fm = document.frm;	
+	if(fm.delPw.value=="") {
+		alert("비밀번호란이 공란입니다");
+		fm.delPw.focus();
+		return;
+	}else {
+		alert("저장버튼을 누르셨습니다");
+	}
+	
+	
+	
+}
+
+
+function deleteBtn() {
+	alert("취소버튼을 누르셨습니다");
+	
+}
+
+
+</script>
+
+
+</head>
+<body>
+<h3>글삭제</h3>
+<hr>
+<form name="frm">
+<p style="text-align: center;">비밀번호<input type="text" name="delPw" style="width:100px; height:25px;"></p>
+</form>
+	<hr>
+	<input type="button" id="save" value="저장" onclick="saveBtn();" style="float: right;">
+	<input type="button" id="cancel" value="취소" onclick="deleteBtn();" style="float: right;">
+
+
+
+</body>
+</html>

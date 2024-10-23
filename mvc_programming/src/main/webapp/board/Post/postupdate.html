@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>글수정</title>
+
+<script>
+
+function saveBtn()  {
+	
+	var fm = document.frm;
+	
+	if(fm.title.value=="") {
+		alert("제목을 입력해주세요")
+		fm.title.focus();
+		return;
+	}else if(fm.content.value==""){
+		alert("내용을 입력해주세요")
+		fm.content.focus();
+		return;
+	}else if(fm.author.value=="") {
+		alert("작성자를을 입력해주세요")
+		fm.author.focus();
+		return;
+	}
+	else{
+		alert("글수정 성공");
+	}
+	
+	}
+
+function deleteBtn() {
+	alert("취소버튼을 누르셨습니다");
+	
+}
+	
+
+</script>
+
+
+
+
+</head>
+<body style="width:800px;">
+<h3>글수정</h3>
+<hr>
+<form name="frm">
+
+	제목<input type="text" name="title">
+	<hr>
+	내용<input type="text" name="content" style="width:700px;height:250px; display:inline-block;">
+	<hr>
+	작성자<input type="text" name="author" style="width:90px;height:40px; display:inline-block;">
+	<hr>
+	비밀번호<input type="text">
+	<hr>
+	첨부파일<input type="text">
+	<input type="button" id="filecheck" value="파일선택">선택된 파일 없음
+	<hr>
+		<input type="button" id="save" value="저장" onclick="saveBtn();" style="float: right;">
+		<input type="button" id="cancel" value="취소" onclick="deleteBtn();" style="float: right;">
+	
+
+</form>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트 변수 학습하기</title>
+<script>
+let x;  // 전역변수 x지정 (전역을 let으로 지정하면 this 사용불가)
+function f(){
+	let y;   // 함수 안에 지역에 있으므로 지역변수  y
+	
+	x= 10;
+	y= 20;
+	z= 30;   // 통합타입을 지정하지않으면 지역에 있어도 전역변수 z
+	
+	if(y==20){
+		let b =40;       //블럭안에 있는 블럭변수 b
+		b++;  			 // 증가식
+		document.write("b의 값은?"+b);
+		document.write("<br>");
+	}	  //블럭이 끝남 블럭변수 사라짐
+	
+	document.write("y값은?"+y);	
+	document.write("<br>");
+}  //지역끝남 지역변수 사라짐
+
+f();  //함수호출
+
+document.write("x값은?"+x);
+document.write("<br>");
+document.write("z값은?"+z);
+document.write("<br>");
+</script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>글목록</title>
+<style>
+.postUpdate{
+	background-color:black;
+	color:white;
+	float: right;
+}
+.searchBtn {
+	background-color:black;
+	color:white;
+	float: right;
+}
+
+.pageNum{
+	margin: 50px 0 20px; 
+	text-align: center; 
+
+}
+
+
+
+</style>
+<script>
+	function postwrite() {
+		alert("글쓰기버튼을 누르셨습니다");
+	}
+	function searchBtn() {
+		alert("검색버튼을 누르셨습니다");
+	}
+
+</script>
+</head>
+
+
+
+<body>
+<hr>
+<h3>글목록</h3>
+<hr>
+
+<div>
+	<input type="button" class="searchBtn" id="searchBtn" onclick="searchBtn();" value="검색">
+	<input type="text" id="searchBox" value="" style="float: right;">
+		<select name="option" style="float: right;">
+				<option value="제목" selected>제목</option>
+				<option value="내용" >내용</option>
+				<option value="작성자">작성자</option>
+				<option value="최신순">최신순</option>
+		</select>
+		
+</div>
+<p>
+	<table style=" width:800px; text-align: center; margin:auto;">
+		<thead>
+			<tr>
+				<th>No</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>조회</th>
+				<th>날짜</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr>			
+				<td>170</td>
+				<td>장애학생들을 위한특별한 피아노</td>
+				<td>관리자</td>
+				<td>5</td>
+				<td>2024-09-26</td>
+			</tr>
+			<tr>
+				<td>169</td>
+				<td>[AI혁명](125)'문과생도 만드는 AI... 단순명령어로 문턱 낮춘 원티드</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>
+			<tr>
+				<td>168</td>
+				<td>교육발전 특구로 지정된 파주시, 파주 성인학교 개교</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>
+				<tr>
+				<td>167</td>
+				<td>노벨상 휩쓴 구글 딥마인드, 어디까지 진화했나[AI헬스케어]</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>
+			<tr>
+				<td>166</td>
+				<td>덕후들이 만들던 게임산업 직장으로서도 좋을까</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>
+			<tr>
+				<td>165</td>
+				<td>초등학생인강 밀크티, 전과목 최다 학습 콘텐츠로 성적</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>			
+			<tr>
+				<td>164</td>
+				<td>한국 교육 검정원, 코딩지도사 자격증 온라인 교육</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>			
+			<tr>
+				<td>163</td>
+				<td>소프트웨어 토익 정기평가 7432명 응시</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>	
+			<tr>
+				<td>162</td>
+				<td>휴넷 코딩없는 데이터 분석교육 '마이데이터캔버스' 출시</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>	
+			<tr>
+				<td>161</td>
+				<td>안양시청소년재단 CODE & ART 미디어아트창작 갤러리 프로그램 진행</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>			
+			<tr>
+				<td>160</td>
+				<td>저비용 저전력 추론 AI반도체 뜬다</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>
+			<tr>
+				<td>159</td>
+				<td>경남 테크노파크,제 1회 전국 프로그래밍 드론 메이커스 대회 5개팀 수상</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>
+			<tr>
+				<td>158</td>
+				<td>국립 부경대 '동남권 초등학교 로봇/자율주행 코딩경진대회'개최</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>		
+			<tr>
+				<td>157</td>
+				<td>생활속 과학의 세계, 특강으로 알아보세요</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>
+			<tr>
+				<td>156</td>
+				<td>[금융AI 초격차]신한은행, 기술접근 장벽 허물다</td>
+				<td>관리자</td>
+				<td>3</td>
+				<td>2024-09-26</td>
+			</tr>
+			
+
+		</tbody>
+	</table>
+	<input type = "button" class="postUpdate" value="글쓰기" onclick="postwrite();">
+</body>
+
+
+<div style="margin:auto;">
+	<table>
+	<tr>
+	
+	<input type="button" name="pageNum" id="page1" value = "1" checked>
+	<input type="button" name="pageNum" id="page2" value = "2" >
+	<input type="button" name="pageNum" id="page3" value = "3">
+	<input type="button" name="pageNum" id="page4" value = "4" >
+	<input type="button" name="pageNum" id="page5" value = "5">
+	<input type="button" name="pageNum" id="page6" value = "6" >
+	<input type="button" name="pageNum" id="page7" value = "7">
+	<input type="button" name="pageNum" id="page8" value = "8" >
+	<input type="button" name="pageNum" id="page9" value = "9">
+	<input type="button" name="pageNum" id="page10" value = "10">
+		
+		
+	</tr>
+	
+	</table>
+</div>
+
+
+
+
+
+</body>
+</html>

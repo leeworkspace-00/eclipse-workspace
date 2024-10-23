@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>If문, for문</title>
+</head>
+<body>
+<script>
+// 영어점수가 90점 이상이면 A
+// 영어점수가 80점 이상이면 B
+// 영어점수가 70점 이상이면 C
+// 영어점수가 60점 이상이면 D
+// 영어점수가 60점 미만이면 F
+// 라고 출력하는 구문을 만들고 영어점수 변수는 eng이다 
+// 구문완성하시오
+
+/* let eng;
+//eng = 89;
+
+eng = prompt("점수를 입력하세요","");
+
+if (eng>=90){
+	document.write("A");	
+}else if (eng>=80){
+	document.write("B");
+}else if (eng>=70){
+	document.write("C");
+}else if (eng>=60){	
+	document.write("D");
+}else{
+	document.write("F");	
+}
+document.write("<br>");	
+// 조건식 2 switch문
+
+// 수학점수 math가 90점이면 우수
+// 수학점수가 80점이면 보통
+// 수학점수가 70점이면 미흡
+// 수학점수가 60점이면 저조
+// 수학점수가 나머지는 모름
+// 이라고 switch case 문을 통해서 작성하세요
+
+/* switch(){
+
+case 값 :	
+	
+case 값:	
+
+case 값:
+	
+default:
+
+} */
+
+/* let math;
+math = prompt("수학점수를 입력해주세요","");
+
+switch(math){
+
+case "90":
+	document.write("우수");	
+	break;
+case "80":	
+	document.write("보통");
+	break;
+case "70":
+	document.write("미흡");
+	break;
+case "60":
+	document.write("저조");
+	break;
+default:
+	document.write("모름");
+}
+document.write("<br>");	
+// 입력한 요일에 따라서 정상영업인지 아닌지를 출력하세요
+// 월~금 : 정상영업  토~일 : 휴무
+
+let day;   //통합변수 day선언
+day = prompt("요일을 입력하세요","");
+
+switch (day){
+case "월":	
+case "화":	
+case "수":	
+case "목":	
+case "금":
+	document.write("정상엉업");
+	break;
+case "토":	
+case "일":
+	document.write("휴무");
+	break;
+default:	
+	document.write("모름");
+} 
+ */
+
+//for문 학습하기
+
+//형식 
+//for(초기식;조건식;증가식){
+		
+//}
+
+//1에서 10까지의 수를 출력하세요
+
+/* for(let i=0;i<=10;i++){	
+	document.write(i);
+	document.write("<br>");
+} */
+
+//1에서 11까지의 합을 구해서 결과를 출력해주세요
+
+/* let total=0;
+for(let i=1;i<=11;i++){
+	total = total+i;
+}
+document.write(total); */
+
+
+//-- while 이용해서 반복문 만들기
+
+//형식 
+/* 초기식;
+while(조건식){  
+	
+	
+	증가식;
+}
+ */
+
+/* let total2=0;
+let i=1;
+while(i<=11){  
+	
+ total2 = total2+i;	
+ i++;
+}
+document.write("<br>");
+document.write("while문을 이용한 합:"+total2);
+
+
+//1에서 100까지의 수중에 홀수의 합을 구하시오
+
+let total3=0;
+
+for(let i =1;i<=100;i++){
+	//document.write("for문안에 들어왔음");
+	
+	if (i%2 ==1){
+		//document.write("if문안에 들어왔음");
+		total3 = total3+i;		
+		//document.write("dd"+total3);
+	}	
+}
+document.write("<br>");
+document.write(total3); */
+
+// 반복문 3번째 do while문
+
+//형식
+/* 초기식;
+do{	
+	증가식;
+}while(조건식); */
+
+// 일단 한번은 수행하고 조건식을 수행하세요라는 뜻
+
+//1에서 10까지의 수를 출력하세요
+/* document.write("<br>");
+let k=0;
+do{
+	document.write("순서번호입니다:"+k);	
+	document.write("<br>");
+	
+	k++;
+}while(k<-1); */
+
+
+// 이중for문 사용하기 : for문안에 for문이 존재한다 
+
+/* for(초기식;조건식;증감식){
+	for(초기식;조건식;증감식){		
+		
+	}	
+} */
+
+
+// 별그리기
+
+/* for(let i=0;i<5;i++){
+	for(let j=0;j<i+1; j++){		
+		document.write("☆")
+	}	
+	document.write("<br>");
+} */
+
+/*    i값     j값
+   0       0
+   1       0,1  --두번 돈다
+   2       0,1,2
+   3       0,1,2,3
+   4       0,1,2,3,4  */
+
+
+//정위치에 있는 별을 찍어보기
+
+/* for (let i=1;i<=5;i++){	
+	for(let k=5-i;k>0;k--){
+		document.write("★");		
+	}
+	for(let j=1;j<=i*2-1;j++){		
+		document.write("☆");
+	}
+	document.write("<br>");
+}
+ */
+   
+ let total5=0;
+ for(let i=1;i<=10;i++){
+	 
+	 if (i%2==0){
+		 continue;
+	 }
+	 total5 = total5+i;	 
+ }
+   
+document.write("합은"+total5);
+document.write("<br>");   
+let total6=0;
+for(let i=1;i<=10;i++){
+	 
+	 if (i%2==1){
+		 total6 = total6+i;
+	 }	 
+}  
+document.write("합은"+total6);
+
+
+   
+</script>
+
+
+
+</body>
+</html>
