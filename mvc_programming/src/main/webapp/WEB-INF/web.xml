@@ -9,6 +9,10 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
+  <!-- 웹서버 설정파일이라서 가상결로를 등록 -->
+  <!-- 컨트롤러로 묶고 프론트 컨트롤러로 보낸다 -->
+  
+  
   <servlet>
     <servlet-name>controller</servlet-name>
     <servlet-class>mvc.controller.FrontController</servlet-class>

@@ -265,7 +265,7 @@
 
     <servlet>
         <servlet-name>jsp</servlet-name>
-        <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+        <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class> <!-- 세팅값이org.apache.jasper.servlet.JspServlet이게 있어서 jsp파일을 해석해줄수 있는 것 -->
         <init-param>
             <param-name>fork</param-name>
             <param-value>false</param-value>

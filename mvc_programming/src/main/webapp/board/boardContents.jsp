@@ -77,10 +77,13 @@ $(document).ready(function(){
 	<br>
 	<a style = "float:right;"> 작성일 : <%=bv.getWriteday() %></a>
 	<br>
-	<a style = "float:right;"> 첨부파일 : <%=bv.getFilename() %></a>
+	
+	<a>
+	<img src = "/images/<%=bv.getFilename() %>">
+	 첨부파일입니다.</a>
 	<br>
 	</div>
-	<hr style="width:800px;">
+	<hr>
 
 	
 
@@ -89,8 +92,9 @@ $(document).ready(function(){
 
 <div style="float: right;">
 	<input type="button" name="update" value = "수정" onclick = "location.href='<%=request.getContextPath()%>/board/boardModify.aws?bidx=<%=bv.getBidx()%>'">
-	<input type="button" name="delete" value = "삭제">
-	<input type="button" name="answer" value = "답변">
+	<input type="button" name="delete" value = "삭제" onclick = "location.href='<%=request.getContextPath()%>/board/boardDelete.aws?bidx=<%=bv.getBidx()%>'">
+	<input type="button" name="answer" value = "답변" onclick = "location.href='<%=request.getContextPath()%>/board/boardReply.aws?bidx=<%=bv.getBidx()%>'">
+	<!-- 답변하기는 가져와야할 값이 더 많다 (댓글기능)  -->
 	<input type="button" name="list" value = "목록" onclick = "location.href='<%=request.getContextPath()%>/board/boardList.aws?bidx=<%=bv.getBidx()%>'">
 	<div>
 		<input type="text" id="reply">

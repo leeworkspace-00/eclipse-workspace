@@ -39,45 +39,13 @@
 		let ans=confirm("저장하시겠습니까?");
 		if(ans==true) {
 			fm.action="<%=request.getContextPath()%>/board/boardModifyAction.aws";	
-			// action: 샌드리다이렉트 > 이제 어디로 보낼거야 목록?
-					
 			fm.method="post";
+			fm.enctype="multipart/form-data";
 			fm.submit();
 		}
 		return;
 		}
-	
-	/* 	function deleteBtn() {
-		alert("취소버튼을 누르셨습니다");
-		
-	}
-	
-	function saveBtn()  {	
-
-	var fm = document.frm;
-	
-	if(fm.title.value=="") {
-		alert("제목을 입력해주세요")
-		fm.title.focus();
-		return;
-	}else if(fm.content.value==""){
-		alert("내용을 입력해주세요")
-		fm.content.focus();
-		return;
-	}else if(fm.author.value=="") {
-		alert("작성자를을 입력해주세요")
-		fm.author.focus();
-		return;
-	}
-	else{
-		alert("글수정 성공");
-	}
-	
-	} */
 </script>
-
-
-
 
 </head>
 <body style="width:800px;">
@@ -95,10 +63,10 @@
 	비밀번호<input type="password" name = "password">
 	<hr>
 	첨부파일
-	<input type="button" name="filecheck" value="<%=bv.getFilename()%>">선택된 파일 없음
+	<input type="button" name="filename" value="<%=bv.getFilename()%>">선택된 파일 없음
 	<hr>
-	<input type="button" id="save" value="저장" onclick="saveBtn();" style="float: right;">
-	<input type="button" id="cancel" value="취소" onclick="history.back();" style="float: right;">
+	<input type="button"  value="저장" onclick="saveBtn();" style="float: right;">
+	<input type="button"  value="취소" onclick="history.back();" style="float: right;">
 		
 	
 

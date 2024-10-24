@@ -14,14 +14,14 @@ String memberId ="";
 String memberName="";
 String alt = "";
 String logMsg = "";
-if (session.getAttribute("midx") != null){ // 로그인이 되었으면
+if (session.getAttribute("midx") != null){ // 세션으로 midx(회원번호 확인) 없으면(null) 있으면(!=null) 로그인이 되었으면 
 
-	midx = (int)session.getAttribute("midx");
-	memberId = (String)session.getAttribute("memberid");
-	memberName = (String)session.getAttribute("memberName");
+	midx = (int)session.getAttribute("midx");		// midx에 세션정보 가져와서 담기
+	memberId = (String)session.getAttribute("memberid");	// memberId에 세션정보 가져와서 담기 
+	memberName = (String)session.getAttribute("memberName");// memberName에 세션 정보 가져와서 담기
 
 	alt = memberName+ "님 로그인 되었습니다.";
-	logMsg = "<a href ='"+request.getContextPath()+"/member/memberLogout.aws'>로그아웃</a>";
+	logMsg = "<a href ='"+request.getContextPath()+"/member/memberLogout.aws'>로그아웃</a>";		// 로그인되었다고 알려주고 로그아웃링크 걸어주기
 
 }else {
 	alt = "로그인 하세요";
@@ -34,7 +34,7 @@ if (session.getAttribute("midx") != null){ // 로그인이 되었으면
 <head>
 
 <meta charset="UTF-8">
-<title>회원가입성공 페이지</title>
+<title>인덱스페이지</title>
 <link href="./css/style.css" type="text/css" rel="stylesheet">
 
 <script>

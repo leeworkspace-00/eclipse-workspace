@@ -38,37 +38,22 @@
 			alert("비밀번호를 입력해주세요")
 			fm.password.focus();
 			return;
-		}
-		let ans=confirm("저장하시겠습니까?");
-		if(ans==true) {
+		}else {
+			let ans=confirm("저장하시겠습니까?");	// 함수의 값을 참과 거짓 true false로 나눈다 
+			if(ans==true) {
+				fm.action="<%=request.getContextPath()%>/board/boardWriteAction.aws";
+				fm.method="post";
+				fm.enctype="multipart/form-data";		// 문자를 넘길때 어떤 형태로 넘길건지 지정한다
+				fm.submit();
+				return;
+			}
 			
-			fm.action="<%=request.getContextPath()%>/board/boardWriteAction.aws";
-			fm.method="post";
-			fm.enctype="multipart/form-data";		// 문자를 넘길때 어떤 형태로 넘길건지 지정한다
-			fm.submit();
 		}
-		return;
-		}
+	}	
 		
 		
-		
-		
-/* 		else{
-			alert("글쓰기 성공");
-		} */
-		
-/* 	function deleteBtn() {
-		alert("취소버튼을 누르셨습니다");
-		
-	} */
-		
-
-
-
+	
 </script>
-
-
-
 
 </head>
 <body style="width:800px;">
@@ -84,7 +69,7 @@
 	비밀번호<input type="password" name = "password">
 	<hr>
 	첨부파일
-	<input type="button" name="filename" value="파일선택" onclick ="">선택된 파일 없음
+	<input type="file" name="filename">
 	<hr>
 	<input type="button" id="save" value="저장" onclick="saveBtn();" style="float: right;">
 	<input type="button" id="cancel" value="취소" onclick="history.back();" style="float: right;">
