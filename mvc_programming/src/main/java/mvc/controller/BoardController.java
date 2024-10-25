@@ -1,16 +1,20 @@
 package mvc.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,8 +23,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import mvc.dao.BoardDao;
 import mvc.vo.BoardVo;
-import mvc.vo.Criteria;
 import mvc.vo.PageMaker;
+import mvc.vo.searchCriteria;
 
 @WebServlet("/BoardController")
 public class BoardController extends HttpServlet {
@@ -46,23 +50,34 @@ public class BoardController extends HttpServlet {
 			}
 			int pageInt = Integer.parseInt(page);
 
-			Criteria cri = new Criteria();
-			cri.setPage(pageInt);
+			String searchType = request.getParameter("searchType");
+			String keyword = request.getParameter("keyword");
+			if (keyword == null) {
+				keyword = "";
+			}
+			searchCriteria scri = new searchCriteria();
+
+			scri.setPage(pageInt); // 페이지에 필요한 변수 담기
+			scri.setSearchType(searchType);
+			scri.setKeyword(keyword);
+
+			// Criteria cri = new Criteria(); 상속 으로 잇고ㅓㄴ 사용 ㄴㄴ
+			// cri.setPage(pageInt); // 페이지에 필요한 변수 담기
 
 			PageMaker pm = new PageMaker();
-			pm.setCri(cri); // <-- pagemaker 에 Criteria담아서 가지고 다닌다
+			pm.setScri(scri); // <----- PageMaker에 SearchCriteria 담아서 가지고 다닌다
 
 			BoardDao bd = new BoardDao();
 			// 페이징처리하기위해 전체데이터 개수 가져오기
-			int boardCnt = bd.boardTotalCount();
+			int boardCnt = bd.boardTotalCount(scri);
 			// System.out.println("게시물수는? : " + boardCnt);
 			pm.setTotalCount(boardCnt); // <-- pagemaker 에 전체게시물의 개수 담아서 페이지 계산
 
-			ArrayList<BoardVo> alist = bd.boardSelectAll(cri);
+			ArrayList<BoardVo> alist = bd.boardSelectAll(scri);
 			// System.out.println("alist : " + alist); // 객체 주소가 나오면 객체가 생성되었다는 걸 확인 가능
-			request.setAttribute("pm", pm); // 포워드 방식으로 넘기기 때문에 공유가 가능하다
 
 			request.setAttribute("alist", alist); // request.setAttribute에 왜 담는데?
+			request.setAttribute("pm", pm); // 포워드 방식으로 넘기기 때문에 공유가 가능하다
 			// 이건 화면까지 가져간다는데?
 
 			// 왜 포워드 방식으로 왜보여주는데?
@@ -91,17 +106,11 @@ public class BoardController extends HttpServlet {
 			System.out.println("savePath" + savePath); // 찍어보기
 			// 업로드 되는 파일사이즈
 			int fsize = (int) request.getPart("filename").getSize(); // >> 여기 디버깅
-			System.out.println("fsize생성된지 확인 : " + fsize); // 찍어보기
-
 			String originFileName = ""; // 원본파일이름
 
 			if (fsize != 0) {
 				Part filePart = (Part) request.getPart("filename"); // 넘어온 멀티파트형식의 파일을 Part클래스로 담는다
-				// System.out.println("filePart==> " + filePart); // 찍어보기
 				originFileName = getFileName(filePart); // 파일이름 추출
-				// System.out.println("originFileName ==> " + originFileName); // 찍어보기
-				// System.out.println("저장되는 위치 ==> " + savePath + originFileName); // 찍어보기
-
 				File file = new File(savePath + originFileName); // 파일객체 생성
 				InputStream is = filePart.getInputStream(); // 파일 읽어들이는 스트림 생성
 				FileOutputStream fos = null;
@@ -116,15 +125,8 @@ public class BoardController extends HttpServlet {
 			}
 
 			int sizeLimit = 15 * 1024 * 1024; // 15메가를 올리겠다(15M)
-			// System.out.println(sizeLimit);// 찍어보기
 			String dataType = "UTF-8";
-			// System.out.println(dataType);// 찍어보기
 			DefaultFileRenamePolicy policy = new DefaultFileRenamePolicy();
-			// System.out.println(policy);// 찍어보기
-			// MultipartRequest multi = new MultipartRequest(request, savePath, sizeLimit,
-			// // 톰캣 버전 오류로 이거 못씀;; 자바자체 클래스로 파일 올리기
-			// dataType, policy);
-
 			String subject = request.getParameter("subject");
 			String contents = request.getParameter("contents");
 			String writer = request.getParameter("writer");
@@ -135,6 +137,22 @@ public class BoardController extends HttpServlet {
 			session.getAttribute("midx");
 			int midx = Integer.parseInt(session.getAttribute("midx").toString()); // 로인인 할 때 담았던 midx값을 꺼낸다
 
+			String ip = "";
+			try {
+				ip = getUserIp(request);
+				System.out.println("ip넘어왔나?" + ip);
+				// String serverIp = InetAddress.getLocalHost().getHostAddress();
+				// System.out.println("서버ip넘어왔나?" + serverIp);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+
+			// String ip = request.getRemoteAddr(); // >> 아이피주소 요청해서 ip변수에 담기
+			// ip넘어왔나?0:0:0:0:0:0:0:1 >> 자기자신의 컴 맥주소
+			// 서버ip넘어왔나?192.168.5.14
+
 			BoardVo bv = new BoardVo();
 			bv.setSubject(subject);
 			bv.setContents(contents);
@@ -142,6 +160,7 @@ public class BoardController extends HttpServlet {
 			bv.setPassword(password);
 			bv.setMidx(midx);
 			bv.setFilename(originFileName);
+			bv.setIp(ip);
 
 			// 2. DB처리한다
 
@@ -340,6 +359,19 @@ public class BoardController extends HttpServlet {
 
 			int midx = Integer.parseInt(session.getAttribute("midx").toString());
 
+			String ip = "";
+			try {
+				ip = getUserIp(request);
+				System.out.println("ip넘어왔나?" + ip);
+
+				// String serverIp = InetAddress.getLocalHost().getHostAddress();
+				// System.out.println("서버ip넘어왔나?" + serverIp);
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+
 			BoardVo bv = new BoardVo();
 			bv.setSubject(subject);
 			bv.setContents(contents);
@@ -351,6 +383,7 @@ public class BoardController extends HttpServlet {
 			bv.setOriginbidx(Integer.parseInt(originbidx));
 			bv.setDepth(Integer.parseInt(depth));
 			bv.setLevel_(Integer.parseInt(level_)); // 다 담았음
+			bv.setIp(ip);
 
 			BoardDao bd = new BoardDao();
 			int maxbidx = bd.boardReply(bv); // value ==2 가 성공
@@ -367,6 +400,56 @@ public class BoardController extends HttpServlet {
 			 * paramMethod = "S"; // sendRedirect방식으로 url = request.getContextPath() +
 			 * "/board/boardContents.aws?bidx="+bidx;
 			 */
+
+		} else if (location.equals("boardDownload.aws")) {
+			System.out.println("boardDownload 넘어왔는지 확인");
+			String filename = request.getParameter("filename");
+			String savePath = "D:\\dev\\eclipse-workspace\\mvc_programming\\src\\main\\webapp\\images\\"; // 저장되는 파일 위치
+																											// 가져오기
+			ServletOutputStream sos = response.getOutputStream();
+
+			String downfile = savePath + filename; //
+			System.out.println("downfile 생성된지 확인 : " + downfile);
+
+			File f = new File(downfile);
+
+			String header = request.getHeader("User-Agent");
+
+			String fileName = "";
+			if (header.contains("Chrome") || header.contains("Opera")) {
+
+				fileName = new String(filename.getBytes("UTF-8"), "ISO-8859-1");
+				// response.setHeader("Cache-Control", "no-cache");
+				response.setHeader("Content-Disposition", "attachment;filename=" + fileName); // 콘텐츠의 포지션첨부파일 형태로 하겠다
+			} else if (header.contains("MSIE") || header.contains("Trident") || header.contains("Edge")) {
+
+				fileName = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+				response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+
+			}
+
+			else {
+				// response.setHeader("Cache-Control", "no-cache");
+				response.setHeader("Content-disposition", "attachment;fileName=" + filename);
+
+			}
+
+			FileInputStream in = new FileInputStream(f); // 파일을 버퍼로 읽어와서 출력한다
+
+			byte[] buffer = new byte[1024 * 8]; // 이 속도로 읽어낼거임 속도 지정함
+
+			while (true) {
+				int count = in.read(buffer); // 바이트 단위로 돌릴거임;
+				if (count == -1) {
+					break;
+				}
+				sos.write(buffer, 0, count);
+			}
+			in.close();
+			sos.close();
+
+			paramMethod = "S";
+			url = request.getContextPath();
 
 		}
 
@@ -394,6 +477,46 @@ public class BoardController extends HttpServlet {
 			}
 		}
 		return null;
+	}
+
+	public String getUserIp(HttpServletRequest request) throws Exception { // 클라이언트 ip 주소 뽑는 메서드
+
+		String ip = null;
+
+		ip = request.getHeader("X-Forwarded-For");
+
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("HTTP_CLIENT_IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("X-Real-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("X-RealIP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("REMOTE_ADDR");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+
+		if (ip.equals("0:0:0:0:0:0:0:1") || ip.equals("127.0.0.1")) {
+			InetAddress address = InetAddress.getLocalHost();
+			ip = address.getHostAddress();
+
+		}
+
+		return ip;
 	}
 
 }

@@ -72,21 +72,48 @@ $(document).ready(function(){
 	<hr style="width:800px;">
 	<div >
 	글내용 : <%=bv.getContents() %>
+	</div>
 	<br>
 	<a style = "float:right;"> 작성자 : <%=bv.getWriter() %></a>
 	<br>
 	<a style = "float:right;"> 작성일 : <%=bv.getWriteday() %></a>
 	<br>
 	
-	<a>
-	<img src = "/images/<%=bv.getFilename() %>">
-	 첨부파일입니다.</a>
-	<br>
-	</div>
-	<hr>
-
+	<% if (bv.getFilename() == null || bv.getFilename().equals("") ) {}else{ %>	
+	<img src="<%=request.getContextPath() %>/images/<%=bv.getFilename() %>">	
+	<p>
+	<a href="<%=request.getContextPath() %>/board/boardDownload.aws?filename=<%=bv.getFilename() %>" class="fileDown">	
+	첨부파일 다운로드</a>
+	</p>	
+	<%} %>
+	
+	
+	
+	
 	
 
+	
+	
+<%-- 	<img src = "/images/<%=bv.getFilename() %>">
+	
+	<p>
+	<a href = "<%=request.getContextPath()%>/board/boardDownload.aws?filename=<%=bv.getFilename() %>" class = "filedown">
+	 첨부파일입니다.</a>
+	 </p>
+	<br>
+	</div> --%>
+	
+<%-- 	<% if (bv.getFilename() == null || bv.getFilename().equals("") ) {}else{ %>	
+	<img src="<%=request.getContextPath() %>/images/<%=bv.getFilename() %>">	
+		
+	<%} %>
+	<p>
+	<a href="<%=request.getContextPath() %>/board/boardDownload.aws?filename=<%=bv.getFilename() %>" class="fileDown">	
+	첨부파일 다운로드</a>
+	</p>
+	<br> --%>
+	
+	
 </div>
 
 
@@ -94,7 +121,6 @@ $(document).ready(function(){
 	<input type="button" name="update" value = "수정" onclick = "location.href='<%=request.getContextPath()%>/board/boardModify.aws?bidx=<%=bv.getBidx()%>'">
 	<input type="button" name="delete" value = "삭제" onclick = "location.href='<%=request.getContextPath()%>/board/boardDelete.aws?bidx=<%=bv.getBidx()%>'">
 	<input type="button" name="answer" value = "답변" onclick = "location.href='<%=request.getContextPath()%>/board/boardReply.aws?bidx=<%=bv.getBidx()%>'">
-	<!-- 답변하기는 가져와야할 값이 더 많다 (댓글기능)  -->
 	<input type="button" name="list" value = "목록" onclick = "location.href='<%=request.getContextPath()%>/board/boardList.aws?bidx=<%=bv.getBidx()%>'">
 	<div>
 		<input type="text" id="reply">

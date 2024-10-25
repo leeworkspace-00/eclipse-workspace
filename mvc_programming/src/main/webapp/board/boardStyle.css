@@ -1,0 +1,5 @@
+@charset "UTF-8";
+table { width: 100%; border-collapse: collapse; }
+table th, table td { padding: 5px 10px; }
+.listTable th, .listTable td { border-bottom: 1px solid lightgray; }
+.listTable .subject { text-align: left; }

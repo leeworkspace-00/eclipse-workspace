@@ -23,6 +23,9 @@ public class FrontController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8"); // 한글파일도 깨지지 않게 올라가게 하기 위한 설정
+
 		String uri = request.getRequestURI(); // 전체주소 가져오기
 		// /member/memberJoinAction.aws
 		String[] entity = uri.split("/"); // split으로 자르기 > 그리고 배열형태로 만들어준다

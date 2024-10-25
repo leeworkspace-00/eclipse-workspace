@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import mvc.dbcon.Dbconn;
 import mvc.vo.BoardVo;
-import mvc.vo.Criteria;
+import mvc.vo.searchCriteria;
 
 public class BoardDao {
 	private Connection conn; // 전역적으로 사용 연결객체를 여기가(DAO) 데이터 창고니까
@@ -20,56 +20,74 @@ public class BoardDao {
 		this.conn = db.getConnection(); //
 	}
 
-	public ArrayList<BoardVo> boardSelectAll(Criteria cri) {
+	public ArrayList<BoardVo> boardSelectAll(searchCriteria scri) {
 
-		int page = cri.getPage(); // 페이지 번호
-		int perPageNum = cri.getPerPageNum(); // 화면 노출개수
+		int page = scri.getPage(); // 페이지 번호
+		int perPageNum = scri.getPerPageNum(); // 화면 노출개수
+
+		String str = "";
+		String keyword = scri.getKeyword();
+		String searchType = scri.getSearchType();
+
+		// 키워드가 존재한다면(없지 않으면) like 구문을 활용해서 위에 나타나도록 하는 검색기능
+		if (!scri.getKeyword().equals("")) {
+			str = "and " + searchType + " like concat('%','" + keyword + "','%')"; // concat('첫번째
+																					// 붙일내용','"+keyword+"','마지막에 붙일내용')
+
+		}
 
 		ArrayList<BoardVo> alist = new ArrayList<BoardVo>(); // ArrayList컬랙션 객체에 BoardVo를 담겠다 BoardVo는 컬럼값을 담겠다
-		String sql = "SELECT *FROM board where delyn='N' ORDER BY bidx desc,depth LIMIT ?,?"; // board 에 있는 모든 데이터 가져오기
-		ResultSet rs = null; // db에서 결과 데이터를 받아오는 전용 클래스 (담기)
+		String sql = "SELECT *FROM board where delyn='N' " + str + " ORDER BY originbidx desc,depth asc LIMIT ?,?"; // board
+																													// 에
+																													// 있는
+		ResultSet rs = null; // db에서 결과 데이터를 받아오는 전용 클래스 (담기) // 모든 데이터
+								// 가져오기
+		// str > 검색어임 없으면 없는대로 넘어가겠지?
+		// 있으면 검색어 포함되서 나옴
 
 		try {
 			pstmt = conn.prepareStatement(sql);
-
 			pstmt.setInt(1, (page - 1) * perPageNum); // 페이지 빼기 1 * 15
 			pstmt.setInt(2, perPageNum); // 15개씩 나타내주는 perPageNum
-
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				int bidx = rs.getInt("Bidx");
+				int bidx = rs.getInt("bidx");
+				String subject = rs.getString("subject");
+				String contents = rs.getString("contents");
+				String writer = rs.getString("writer");
+				int viewcnt = rs.getInt("viewcnt");
+				int recom = rs.getInt("recom");
+				String writeday = rs.getString("writeday");
 				// int originbidx = rs.getInt("originbidx");
 				// int depth = rs.getInt("depth");
-				// int level_ = rs.getInt("level_");
-				String subject = rs.getString("Subject");
-				// String contents = rs.getString("contents");
-				String writer = rs.getString("Writer");
-				int recom = rs.getInt("recom");
-				int viewcnt = rs.getInt("Viewcnt");
+				int level_ = rs.getInt("level_");
 				// String filename = rs.getString("filename");
-				String writeday = rs.getString("Writeday");
+
 				// String delyn = rs.getString("delyn");
 				// String ip = rs.getString("ip");
 				// int midx = rs.getInt("midx");
 
 				BoardVo bv = new BoardVo();
 				bv.setBidx(bidx);
-				// bv.setOriginbidx(originbidx);
-				// bv.setDepth(depth);
-				// bv.setLevel_(level_);
 				bv.setSubject(subject);
-				// bv.setContents(contents);
+				bv.setContents(contents);
 				bv.setWriter(writer);
-				bv.setRecom(recom);
 				bv.setViewcnt(viewcnt);
-				// bv.setFilename(filename);
+				bv.setRecom(recom);
 				bv.setWriteday(writeday);
+				// bv.setDepth(depth);
+				bv.setLevel_(level_);
+
+				alist.add(bv); // ArrayList객체에 하나씩 추가하고
+				// bv.setOriginbidx(originbidx);
+
+				// bv.setFilename(filename);
+
 				// bv.setDelyn(delyn);
 				// bv.setIp(ip);
 				// bv.setMidx(midx);
 
-				alist.add(bv); // ArrayList객체에 하나씩 추가하고
 			}
 
 		} catch (SQLException e) {
@@ -83,16 +101,26 @@ public class BoardDao {
 				e.printStackTrace();
 			}
 		}
-		return alist; // 리턴
 
+		return alist;
 	}
 
 	// 게시물 전체 개수 구하기
-	public int boardTotalCount() {
+	public int boardTotalCount(searchCriteria scri) {
+
+		String str = "";
+		String keyword = scri.getKeyword();
+		String searchType = scri.getSearchType();
+
+		// 키워드가 존재한다면(없지 않으면) like 구문을 활용해서 위에 나타나도록 하는 검색기능
+		if (!scri.getKeyword().equals("")) {
+			str = "and " + searchType + " like concat('%','" + keyword + "','%')"; // concat('첫번째
+																					// 붙일내용','"+keyword+"','마지막에 붙일내용')
+		}
 
 		int value = 0; // 리턴변수 초기화
 		// 1. 쿼리만들기
-		String sql = "SELECT count(*) as cnt FROM board where delyn='N'"; // 삭제되지 않은 전체 데이터의 수 뽑는 쿼리
+		String sql = "SELECT count(*) as cnt FROM board where delyn='N' " + str + ""; // 삭제되지 않은 전체 데이터의 수 뽑는 쿼리
 		// 2. conn 객체 안에 있는 구문클래스 꺼내 오기
 		// 3. DB컬럼값을 받아오는 전용 클래스ResultSet 호출
 		ResultSet rs = null; // ResultSet은 데이터를 그대로 복사하기 때문에 전달이 빠르다
@@ -131,8 +159,9 @@ public class BoardDao {
 		String PASSWORD = bv.getPassword();
 		String filename = bv.getFilename();
 		int midx = bv.getMidx();
+		String ip = bv.getIp();
 
-		String sql = "INSERT INTO board (originbidx,depth,level_,subject,contents,writer,PASSWORD,midx,filename) value(null,0,0,?,?,?,?,?,?)";
+		String sql = "INSERT INTO board (originbidx,depth,level_,subject,contents,writer,PASSWORD,midx,filename,ip) value(null,0,0,?,?,?,?,?,?,?)";
 		// mysql에서 가져온 인서트 구문 담아주기
 		// originbidx 의 값은 null임
 
@@ -149,6 +178,7 @@ public class BoardDao {
 			pstmt.setString(4, PASSWORD);
 			pstmt.setInt(5, midx);
 			pstmt.setString(6, filename);
+			pstmt.setString(7, ip);
 			int exec = pstmt.executeUpdate(); // 실행되면 1 실행안되면 0
 
 			pstmt = conn.prepareStatement(sql2); // update 실행
@@ -156,7 +186,7 @@ public class BoardDao {
 
 			conn.commit(); // 일괄처리 커밋 try하고 마지막에 커밋하도록 코딩
 
-			value = exec + exec2; // 오류 없이 실행된다면 리턴값 2 아니면 다 실패임
+			value = exec + exec2; // 오류 없이 실행된다면 리턴값 2 아니면 다 실패임 > 더하면2 성공하면 2 리턴되야함
 
 		} catch (SQLException e) {
 			try {
@@ -358,7 +388,7 @@ public class BoardDao {
 		int maxbidx = 0;
 
 		String sql = "update board set depth= depth+1 where originbidx =?  and depth > ?";
-		String sql2 = "insert into board (originbidx, depth,level_,subject, contents, writer,midx,filename,password) values(?,?,?,?,?,?,?,?,?)";
+		String sql2 = "insert into board (originbidx, depth,level_,subject, contents, writer,midx,filename,password,ip) values(?,?,?,?,?,?,?,?,?,?)";
 		String sql3 = "select max(bidx) as maxbidx from board where originbidx=?";
 		try {
 			conn.setAutoCommit(false);
@@ -379,7 +409,7 @@ public class BoardDao {
 			pstmt.setInt(7, bv.getMidx());
 			pstmt.setString(8, bv.getFilename());
 			pstmt.setString(9, bv.getPassword());
-
+			pstmt.setString(10, bv.getIp());
 			int exec2 = pstmt.executeUpdate(); // 실행되면 1 아니면 0
 
 			ResultSet rs = null;
