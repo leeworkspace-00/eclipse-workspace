@@ -1,22 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="mvc.vo.BoardVo"%>
+    <%@ include file ="/common/loginCheck.jsp"%>		
    <%
    BoardVo bv = (BoardVo)request.getAttribute("bv");			// 강제 형변환으로 양쪽의 타입을 맞춰주자
    %> 
-   <%
-    
-    if(session.getAttribute("midx")==null){		// 회원번호가 널값이다 ? > 로그인 안했다는 것  로그인하라고 로그인 화면으로 보냄
-    out.println("<script>alert('로그인해주세요');location.href='"+request.getContextPath()+"/member/memberLogin.aws'</script>");
-    	
-   }%>    
-   
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>글쓰기</title>
-
+<link href="../board/boardStyle.css" rel="stylesheet">
 <script>
 	function saveBtn()  {
 		
@@ -56,24 +51,42 @@
 </script>
 
 </head>
-<body style="width:800px;">
-<h3>글쓰기</h3>
-<hr>
-<form name = "frm">
-	제목<input type="text" name="subject">
-	<hr>
-	내용<input type="text" name="contents"  style="width:700px;height:250px; display:inline-block;">
-	<hr>
-	작성자<input type="text" name="writer" style="width:90px;height:40px; display:inline-block;">
-	<hr>
-	비밀번호<input type="password" name = "password">
-	<hr>
-	첨부파일
-	<input type="file" name="filename">
-	<hr>
-	<input type="button" id="save" value="저장" onclick="saveBtn();" style="float: right;">
-	<input type="button" id="cancel" value="취소" onclick="history.back();" style="float: right;">
+<body>
 
+<header>
+	<h2 class = "mainTitle">글쓰기</h2>
+</header>
+
+<form name = "frm">
+
+<table class = "writeTable">
+<tr>
+	<th>제목</th> <!-- 테이블 헤드 표 첫줄들어가는 자리 -->
+	<td><input type="text" name="subject"></td>
+</tr>
+<tr>
+	<th>내용</th> <!-- 테이블 헤드 표 첫줄들어가는 자리 -->
+	<td><textarea name="contents" rows="6"></textarea></td>
+</tr>
+<tr>
+	<th>작성자</th> <!-- 테이블 헤드 표 첫줄들어가는 자리 -->
+	<td><input type="text" name="writer"></td>
+</tr>
+<tr>
+	<th>비밀번호</th> <!-- 테이블 헤드 표 첫줄들어가는 자리 -->
+	<td><input type="password" name="password"></td>
+</tr>
+<tr>
+	<th>첨부파일</th> <!-- 테이블 헤드 표 첫줄들어가는 자리 -->
+	<td><input type="file" name="filename"></td>
+</tr>
+
+</table>
+	<div class = "btnBox">
+		<button type="button" class="btn" onclick="check();">저장</button>
+		<a class="btn aBtn" onclick="history.back();">취소</a>
+
+	</div>
 </form>
 </body>
 </html>

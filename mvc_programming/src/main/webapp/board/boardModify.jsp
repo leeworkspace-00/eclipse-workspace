@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="mvc.vo.BoardVo"%>
+    <%@ include file = "/common/loginCheck.jsp"%>
    <%
    BoardVo bv = (BoardVo)request.getAttribute("bv");			// 강제 형변환으로 양쪽의 타입을 맞춰주자
    %> 
@@ -12,6 +13,7 @@
 <head>
 <meta charset="UTF-8">
 <title>글수정</title>
+<link href="../board/boardStyle.css" rel="stylesheet">
 
 <script>
 // 유효성검사 

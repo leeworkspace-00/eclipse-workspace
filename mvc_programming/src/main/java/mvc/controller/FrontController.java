@@ -24,7 +24,8 @@ public class FrontController extends HttpServlet {
 			throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8"); // 한글파일도 깨지지 않게 올라가게 하기 위한 설정
+		response.setContentType("text/html;charset=UTF-8");
+		// 한글파일도 깨지지 않게 올라가게 하기 위한 설정
 
 		String uri = request.getRequestURI(); // 전체주소 가져오기
 		// /member/memberJoinAction.aws
@@ -37,7 +38,11 @@ public class FrontController extends HttpServlet {
 
 		} else if (entity[1].equals("board")) {// 잘라온 주소의 1번째 값이 board인지 확인한다 보드면
 			BoardController bc = new BoardController(entity[2]);
-			bc.doGet(request, response); // 이쪽으로 보내! // >> 여기 디버깅
+			bc.doGet(request, response); // 이쪽으로 보내! //
+
+		} else if (entity[1].equals("comment")) {
+			CommentController cc = new CommentController(entity[2]);
+			cc.doGet(request, response);
 
 		}
 
@@ -45,7 +50,7 @@ public class FrontController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response); // >> 여기 디버깅
+		doGet(request, response); //
 	}
 
 }

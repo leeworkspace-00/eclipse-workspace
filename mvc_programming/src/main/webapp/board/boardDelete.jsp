@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%String bidx = (String)request.getAttribute("bidx"); %>
+     <%@ include file ="/common/loginCheck.jsp"%>	
     
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>글삭제</title>
+<link href="../board/boardStyle.css" rel="stylesheet">
 
 <script>
 function saveBtn() {
@@ -33,17 +35,28 @@ function saveBtn() {
 
 </head>
 <body>
-<h3>글삭제</h3>
-<hr>
+
+<header>
+	<h2 class="mainTitle">글삭제</h2>
+</header>
+
 <form name="frm">
 <input type = "hidden" name = "bidx" value = "<%=bidx%>">
-<p style="text-align: center;">비밀번호<input type="password" name="password" style="width:100px; height:25px;"></p>
+
+	<table class = "writeTable">
+		<tr>
+			<th>비밀번호</th>
+			<td><input type="password" name="password"></td>
+		</tr>
+		
+	</table>
+	
+	<div class="btnBox">
+		<button type="button" class="btn" onclick="check();">저장</button>
+		<a class="btn aBtn" href="#"  onclick="history.back();">취소</a>
+	</div>
+
 </form>
-	<hr>
-	<input type="button" value="저장" onclick="saveBtn();" style="float: right;">
-	<input type="button" value="취소" onclick="history.back();"  style="float: right;">
-
-
-
+	
 </body>
 </html>
