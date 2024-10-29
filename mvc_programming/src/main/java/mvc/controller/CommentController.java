@@ -35,25 +35,28 @@ public class CommentController extends HttpServlet {
 			String cwriter = "";
 			String ccontents = "";
 			String writeday = "";
-
+			String delyn = "";
 			String str = "";
-			for (int i = 0; i < alist.size(); i++) {
+			int midx = 0;
+			for (int i = 0; i < alist.size(); i++) { // 있는 만큼 반복할거임
 
 				cidx = alist.get(i).getCidx();
 				cwriter = alist.get(i).getCwriter();
 				ccontents = alist.get(i).getCcontents();
 				writeday = alist.get(i).getWriteday();
+				delyn = alist.get(i).getDelyn();
+				midx = alist.get(i).getMidx();
 
 				String cma = "";
-				if (i == alist.size() - 1) {
+				if (i == alist.size() - 1) { // -1은 컴퓨터에서 없다는 의미임
 					cma = "";
-
 				} else {
 					cma = ",";
-				}
+				} // json파일 마지막 콤마 빼기 조건문 (데이터 없으면 마지막에는 , 빼고 출력하라)
 
 				str = str + "{ \"cidx\" : \"" + cidx + " \", \"cwriter\" : \"" + cwriter + "\", \"ccontents\":\""
-						+ ccontents + "\",\"writeday\":\"" + writeday + "\" }";
+						+ ccontents + "\",\"writeday\":\"" + writeday + "\",\"delyn\":\"" + delyn + "\",\"midx\":\""
+						+ midx + "\" }" + cma;
 
 			}
 
@@ -61,25 +64,53 @@ public class CommentController extends HttpServlet {
 			out.println("[" + str + "]"); // 대괄호 안에 담아야함
 
 		} else if (location.equals("commentWriteAction.aws")) {
-
 			String cwriter = request.getParameter("cwriter");
 			String ccontents = request.getParameter("ccontents");
 			String bidx = request.getParameter("bidx");
 			String midx = request.getParameter("midx");
 
-			// System.out.println("ccontents들어왔나?" + ccontents);
-			// System.out.println("cwriter들어왔나?" + cwriter); 다 나옴
-			// System.out.println("bidx들어왔나?" + bidx);
-			// System.out.println("midx들어왔나?" + midx);
 			commentVo cv = new commentVo();
-			cv.setWriteday(cwriter);
+
+			cv.setCwriter(cwriter);
 			cv.setCcontents(ccontents);
 			cv.setBidx(Integer.parseInt(bidx));
 			cv.setMidx(Integer.parseInt(midx));
 
-			commentDao cd = new commentDao(); // comment 객체 생성
-			int value = cd.commentInsert(cv);
+			// Comment 객체생성
+			commentDao cd = new commentDao();
 
+			int value = cd.commentInsert(cv);
+			System.out.println("value" + value);
+
+			PrintWriter out = response.getWriter();
+			String str = "{\"value\":\"" + value + "\"}";
+			out.println(str);
+
+			/*
+			 * String cwriter = request.getParameter("cwriter"); String ccontents =
+			 * request.getParameter("ccontents"); String bidx =
+			 * request.getParameter("bidx"); String midx = request.getParameter("midx");
+			 * 
+			 * commentVo cv = new commentVo(); cv.setWriteday(cwriter);
+			 * cv.setCcontents(ccontents); cv.setBidx(Integer.parseInt(bidx));
+			 * cv.setMidx(Integer.parseInt(midx)); // 댓글 쓸때 필요한 정보 : 작성자 내용 게시판번호 회원번호
+			 * 
+			 * commentDao cd = new commentDao(); // comment 객체 생성 int value =
+			 * cd.commentInsert(cv); // 삽입 메서드의 리턴값이 1이면 메서드가 동작하도록 ~
+			 * System.out.println("value" + value); PrintWriter out = response.getWriter();
+			 * String str = "{\"value\":\"" + value + "\"}"; // value 라는 이름으로 1 또는 0인 리턴값을
+			 * 출력함 json형식으로 out.println(str); // json 형식으로 웹에 표시해보기
+			 */
+		} else if (location.equals("commentDeleteAction.aws")) { // 댓글 삭제동작
+
+			String cidx = request.getParameter("cidx");
+			System.out.println("cidx 값 확인 : " + cidx); // 000
+			// delyn 을 n > y로 업데이트하는 메서드를 만들어서 호출
+			commentDao cd = new commentDao(); // comment 객체 생성
+			int value = cd.commentDelete(Integer.parseInt(cidx));
+			System.out.println("value" + value);
+
+			// 그리고 나서 화면에 실행성공여부를 json파일로 보여준다
 			PrintWriter out = response.getWriter();
 			String str = "{\"value\":\"" + value + "\"}"; // value 라는 이름으로 1 또는 0인 리턴값을 출력함 json형식으로
 			out.println(str);
