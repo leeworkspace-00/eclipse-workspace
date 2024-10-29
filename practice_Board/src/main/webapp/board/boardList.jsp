@@ -7,7 +7,6 @@
 <title>게시판 글목록</title>
 </head>
 <body>
-화면 만들기
 
 </body>
 </html>
