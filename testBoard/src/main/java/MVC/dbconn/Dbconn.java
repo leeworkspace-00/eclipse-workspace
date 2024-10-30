@@ -1,4 +1,4 @@
-package mvc.dbcon;
+package MVC.dbconn;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

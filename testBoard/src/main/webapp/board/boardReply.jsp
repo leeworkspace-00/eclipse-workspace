@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시판 글목록</title>
+<title>답변하기</title>
+<link href="../board/Style.css" rel="stylesheet">
 </head>
 <body>
 
